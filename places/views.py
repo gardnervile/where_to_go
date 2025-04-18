@@ -4,15 +4,26 @@ import json
 
 def show_places(request):
     places = Place.objects.all()
-    
-    places_data = []
-    for place in places:
-        places_data.append({
-            'name': place.name,
-            'latitude': place.latitude,
-            'longitude': place.longitude,
-            'image_url': place.image.url,
-        })
-    
-    return render(request, 'index.html', {'places_data': json.dumps(places_data)})
 
+    geojson = {
+        "type": "FeatureCollection",
+        "features": []
+    }
+
+    for place in places:
+        geojson["features"].append({
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [place.longitude, place.latitude]
+            },
+            "properties": {
+                "title": place.title,
+                "placeId": f"place_{place.id}",
+                "detailsUrl": f"/static/places/{place.id}.json"  # заглушка
+            }
+        })
+
+    return render(request, 'index.html', {
+        'geojson_data': json.dumps(geojson, ensure_ascii=False)
+    })
