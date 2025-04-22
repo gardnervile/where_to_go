@@ -1,5 +1,7 @@
 asgiref==3.8.1
 Django==4.2.20
+django-admin-sortable2==2.2.6
+django-tinymce==4.1.0
+environs==14.1.1
 pillow==11.2.1
 sqlparse==0.5.3
-typing_extensions==4.13.2
