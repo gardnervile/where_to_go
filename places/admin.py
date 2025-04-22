@@ -3,12 +3,14 @@ from django.utils.html import format_html
 import traceback
 import sys
 from .models import Place, PlaceImage
+from adminsortable2.admin import SortableAdminBase, SortableInlineAdminMixin
 
-class PlaceImageInline(admin.TabularInline):
+
+class PlaceImageInline(SortableInlineAdminMixin, admin.TabularInline):
     model = PlaceImage
     extra = 1
     readonly_fields = ['get_preview']
-    fields = ['image', 'position', 'get_preview']
+    fields = ['image', 'get_preview']
     ordering = ['position']
 
     def get_preview(self, obj):
@@ -23,9 +25,10 @@ class PlaceImageInline(admin.TabularInline):
     get_preview.short_description = "Превью"
 
 @admin.register(Place)
-class PlaceAdmin(admin.ModelAdmin):
+class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
     list_display = ('id', "title", "latitude", "longitude")
     inlines = [PlaceImageInline]
+
 
 @admin.register(PlaceImage)
 class PlaceImageAdmin(admin.ModelAdmin):
