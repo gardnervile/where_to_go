@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404
 from .models import Place
 import json
 from django.http import JsonResponse
+from django.urls import reverse
+
 
 def show_places(request):
     places = Place.objects.all()
@@ -20,8 +22,9 @@ def show_places(request):
             },
             "properties": {
                 "title": place.title,
+                "short_description": place.short_description,
                 "placeId": f"place_{place.id}",
-                "detailsUrl": f"/static/places/{place.id}.json"  # заглушка
+                "detailsUrl": reverse('place_detail', args=[place.id]),
             }
         })
 
@@ -37,8 +40,8 @@ def place_detail(request, id):
     data = {
         "title": place.title,
         "imgs": images,
-        "description_short": place.description_short,
-        "description_long": place.description_long,
+        "short_description": place.short_description,
+        "long_description": place.long_description,
         "coordinates": {
             "lat": place.latitude,
             "lng": place.longitude,

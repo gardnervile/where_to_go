@@ -42,10 +42,15 @@
     {{ geojson_data|safe }}
   </script>
 
+  {% verbatim %}
   <script id="app-template" type="text/template">
     <div v-bind:class="{'sidebar-content': 1, 'bg-white': selectedPlace, 'bg-secondary': !selectedPlace}">
       <div v-if="promptVisible" class="d-flex flex-column justify-content-center align-items-center" style="height: 100%;">
+        {% endverbatim %}
+
         <img class="d-block select-place-prompt mb-4" src="{% static 'hand-pointer-regular.svg' %}" alt="Select place">
+        {% verbatim %}
+
         <h4>Выберите место на карте</h4>
       </div>
 
@@ -59,8 +64,10 @@
 
         <img v-if="mainPhotoSrc" v-bind:src="mainPhotoSrc" class="d-block shadow mb-3 rounded" v-bind:alt="selectedPlace.title">
         <h5 class="mb-3">{{ selectedPlace.title }}</h5>
-        <p>{{ selectedPlace.short_description }}</p>
 
+        <!--<p><strong>Кратко:</strong> {{ selectedPlace.short_description }}</p>-->
+        <p>{{ selectedPlace.short_description }}</p>
+        <!--<p>{{ selectedPlace }}</p>-->
         <div id="place-photos" class="carousel slide mb-3 shadow" data-ride="carousel" data-interval="5000">
           <ol class="carousel-indicators">
             <template v-for="(img, index) in carouselImgs" :key="img">
@@ -90,6 +97,7 @@
       </div>
     </div>
   </script>
+  {% endverbatim %}
 
 </head>
 <body>
@@ -270,8 +278,8 @@
           title: data.title,
           placeId: placeId,
           imgs: data.imgs || [],
-          short_description: data.description_short,
-          long_description: data.description_long,
+          short_description: data.short_description,
+          long_description: data.long_description,
         };
       } finally {
         if (sidebarApp.loadingPlaceId == placeId){
