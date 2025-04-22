@@ -12,10 +12,20 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from environs import Env
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+env = Env()
+env.read_env(os.path.join(BASE_DIR, '.env'))
+
+DEBUG = env.bool("DEBUG", default=False)
+
+SECRET_KEY = env.str("SECRET_KEY")
+
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", subcast=str, default=[])
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -146,7 +156,13 @@ TEMPLATES = [
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = env.str("STATIC_ROOT", default=os.path.join(BASE_DIR, "staticfiles"))
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+X_FRAME_OPTIONS = 'DENY'
