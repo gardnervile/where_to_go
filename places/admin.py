@@ -1,12 +1,26 @@
 from django.contrib import admin
-
+from django.utils.html import format_html
+import traceback
+import sys
 from .models import Place, PlaceImage
 
 class PlaceImageInline(admin.TabularInline):
     model = PlaceImage
     extra = 1
-    fields = ['image', 'position']
+    readonly_fields = ['get_preview']
+    fields = ['image', 'position', 'get_preview']
     ordering = ['position']
+
+    def get_preview(self, obj):
+        try:
+            if obj.image:
+                return format_html('<img src="{}" style="max-height: 200px;" />', obj.image.url)
+        except Exception as e:
+            print('Ошибка в get_preview Inline:', e)
+            traceback.print_exc(file=sys.stdout)
+        return "—"
+
+    get_preview.short_description = "Превью"
 
 @admin.register(Place)
 class PlaceAdmin(admin.ModelAdmin):
