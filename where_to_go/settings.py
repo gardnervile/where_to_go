@@ -14,14 +14,6 @@ SECRET_KEY = env.str("SECRET_KEY")
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", subcast=str, default=[])
 
 
-SECRET_KEY = 'django-insecure-xdhh#(7iky+en%uw@y$-l76x3w(hxa0%wof_i8y_e7erqk2m+3'
-
-
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
