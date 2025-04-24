@@ -28,6 +28,16 @@ DEBUG=True
 SECRET_KEY=your-secret-key
 ALLOWED_HOSTS=127.0.0.1,localhost
 ```
+- SECRET_KEY
+A secret key for a particular Django installation.
+Используется для криптографической подписи и должна быть уникальной и непредсказуемой.
+- ALLOWED_HOSTS
+Список доменных имён или IP-адресов, на которых разрешён запуск сайта.
+Например: 127.0.0.1,localhost,caker.pythonanywhere.com
+- DEBUG
+Включает или отключает режим отладки.
+При DEBUG=True показываются подробные ошибки и трассировки.
+Документация
 
 ### 4. Примените миграции и создайте суперпользователя
 ```
