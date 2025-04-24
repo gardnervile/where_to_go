@@ -20,18 +20,18 @@ class Command(BaseCommand):
         if urlparse(source).scheme in ('http', 'https'):
             response = requests.get(source)
             response.raise_for_status()
-            data = response.json()
+            raw_place_data = response.json()
         else:
             with open(source, 'r', encoding='utf-8') as f:
-                data = json.load(f)
+                raw_place_data = json.load(f)
 
         place, created = Place.objects.get_or_create(
-            title=data['title'],
+            title=raw_place_data['title'],
             defaults={
-                'short_description': data.get('short_description', ''),
-                'long_description': data.get('long_description', ''),
-                'latitude': data['coordinates']['lat'],
-                'longitude': data['coordinates']['lng'],
+                'short_description': raw_place_data.get('short_description', ''),
+                'long_description': raw_place_data.get('long_description', ''),
+                'latitude': raw_place_data['coordinates']['lat'],
+                'longitude': raw_place_data['coordinates']['lng'],
             }
         )
 
@@ -39,7 +39,7 @@ class Command(BaseCommand):
             self.stdout.write(self.style.WARNING(f"Место '{place.title}' уже существует."))
             return
 
-        for idx, img_url in enumerate(data.get('imgs', []), start=1):
+        for idx, img_url in enumerate(raw_place_data.get('imgs', []), start=1):
             img_response = requests.get(img_url)
             img_response.raise_for_status()
             img_content = ContentFile(img_response.content)

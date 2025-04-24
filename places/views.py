@@ -46,7 +46,7 @@ def place_detail(request, id):
 
     images = [img.image.url for img in place.images.all()]
 
-    data = {
+    serialized_place = {
         'title': place.title,
         'imgs': images,
         'short_description': place.short_description,
@@ -58,7 +58,7 @@ def place_detail(request, id):
     }
 
     return JsonResponse(
-        data,
+        serialized_place,
         json_dumps_params={'ensure_ascii': False, 'indent': 2},
         content_type='application/json; charset=utf-8'
     )
