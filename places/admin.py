@@ -24,7 +24,7 @@ class PlaceImageInline(SortableInlineAdminMixin, admin.TabularInline):
             traceback.print_exc(file=sys.stdout)
         return "—"
 
-    get_preview.short_description = "Превью"
+    get_preview.short_description = 'Превью'
 
 
 @admin.register(Place)  

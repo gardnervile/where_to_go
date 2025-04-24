@@ -8,11 +8,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 env = Env()
 env.read_env(os.path.join(BASE_DIR, '.env'))
 
-DEBUG = env.bool("DEBUG", default=False)
+DEBUG = env.bool('DEBUG', default=False)
 
-SECRET_KEY = env.str("SECRET_KEY")
+SECRET_KEY = env.str('SECRET_KEY')
 
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", subcast=str, default=[])
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', subcast=str, default=[])
 
 
 INSTALLED_APPS = [

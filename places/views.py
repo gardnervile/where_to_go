@@ -11,22 +11,22 @@ def show_places(request):
     places = Place.objects.all()
 
     geojson = {
-        "type": "FeatureCollection",
-        "features": []
+        'type': 'FeatureCollection',
+        'features': []
     }
 
     for place in places:
-        geojson["features"].append({
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [place.longitude, place.latitude]
+        geojson['features'].append({
+            'type': 'Feature',
+            'geometry': {
+                'type': 'Point',
+                'coordinates': [place.longitude, place.latitude]
             },
-            "properties": {
-                "title": place.title,
-                "short_description": place.short_description,
-                "placeId": f"place_{place.id}",
-                "detailsUrl": reverse('place_detail', args=[place.id]),
+            'properties': {
+                'title': place.title,
+                'short_description': place.short_description,
+                'placeId': f'place_{place.id}',
+                'detailsUrl': reverse('place_detail', args=[place.id]),
             }
         })
 
@@ -41,13 +41,13 @@ def place_detail(request, id):
     images = [img.image.url for img in place.images.all()]
 
     data = {
-        "title": place.title,
-        "imgs": images,
-        "short_description": place.short_description,
-        "long_description": place.long_description,
-        "coordinates": {
-            "lat": place.latitude,
-            "lng": place.longitude,
+        'title': place.title,
+        'imgs': images,
+        'short_description': place.short_description,
+        'long_description': place.long_description,
+        'coordinates': {
+            'lat': place.latitude,
+            'lng': place.longitude,
         }
     }
 
