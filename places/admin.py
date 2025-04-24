@@ -37,3 +37,4 @@ class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
 class PlaceImageAdmin(admin.ModelAdmin):
     list_display = ['place', 'position']
     ordering = ['place', 'position']
+    raw_id_fields = ['place']
