@@ -22,3 +22,4 @@ Thumbs.db
 
 # Local data
 places/json_sources/
+*.sqlite3
