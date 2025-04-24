@@ -18,7 +18,7 @@ class PlaceImageInline(SortableInlineAdminMixin, admin.TabularInline):
     def get_preview(self, obj):
         try:
             if obj.image:
-                return format_html('<img src="{}" style="max-height: 200px;" />', obj.image.url)
+                return format_html('<img src="{}" style="max-height: 200px; max-width: 300px; object-fit: contain;" />', obj.image.url)
         except Exception as e:
             print('Ошибка в get_preview Inline:', e)
             traceback.print_exc(file=sys.stdout)
@@ -26,7 +26,8 @@ class PlaceImageInline(SortableInlineAdminMixin, admin.TabularInline):
 
     get_preview.short_description = "Превью"
 
-@admin.register(Place)
+
+@admin.register(Place)  
 class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
     list_display = ('id', "title", "latitude", "longitude")
     inlines = [PlaceImageInline]
