@@ -59,3 +59,42 @@ python manage.py runserver
 - координатами
 - кратким и длинным описанием (с HTML-редактором)
 - фото (можно сортировать drag&drop)
+
+## Пример запуска команды загрузки данных
+
+После запуска проекта вы можете загрузить места из JSON-файла с помощью встроенной команды Django:
+
+```bash
+python manage.py load_place путь_до_json_файла
+```
+Примеры:
+- Загрузка из файла:
+```
+python manage.py load_place places/json_sources/moscow_legends.json
+```
+- Загрузка с URL:
+```
+python manage.py load_place https://raw.githubusercontent.com/devmanorg/where-to-go-places/master/places/moscow_legends.json
+```
+После выполнения команды в консоли появится лог загрузки:
+```
+Загружаю: Экскурсионная компания «Легенды Москвы»
+Добавлено 5 изображений
+```
+### Формат JSON-файла:
+```
+{
+  "title": "Экскурсионная компания «Легенды Москвы»",
+  "imgs": [
+    "https://raw.githubusercontent.com/devmanorg/where-to-go-places/master/media/example1.jpg",
+    "https://raw.githubusercontent.com/devmanorg/where-to-go-places/master/media/example2.jpg"
+  ],
+  "description_short": "Краткое описание места...",
+  "description_long": "<p>Полное описание с <b>HTML</b>-разметкой.</p>",
+  "coordinates": {
+    "lat": 55.753676,
+    "lng": 37.620795
+  }
+}
+```
+
