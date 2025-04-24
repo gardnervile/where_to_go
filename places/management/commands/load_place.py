@@ -1,10 +1,12 @@
 import json
+import os
+import sys
+import time
 from urllib.parse import urlparse
 
 import requests
 from django.core.files.base import ContentFile
 from django.core.management.base import BaseCommand
-from django.utils.text import slugify
 
 from places.models import Place, PlaceImage
 
@@ -23,8 +25,8 @@ class Command(BaseCommand):
             response.raise_for_status()
             raw_place_data = response.json()
         else:
-            with open(source, 'r', encoding='utf-8') as file:
-                raw_place_data = json.load(file)
+            with open(source, 'r', encoding='utf-8') as f:
+                raw_place_data = json.load(f)
 
         place, created = Place.objects.get_or_create(
             title=raw_place_data['title'],
@@ -37,20 +39,23 @@ class Command(BaseCommand):
         )
 
         if not created:
-            self.stdout.write(self.style.WARNING(f'Место «{place.title}» уже существует.'))
+            self.stdout.write(self.style.WARNING(f"Место '{place.title}' уже существует."))
             return
 
         for idx, img_url in enumerate(raw_place_data.get('imgs', []), start=1):
-            img_response = requests.get(img_url)
-            img_response.raise_for_status()
+            try:
+                img_response = requests.get(img_url)
+                img_response.raise_for_status()
+            except requests.exceptions.HTTPError as http_err:
+                print(f'Ошибка HTTP при загрузке {img_url}: {http_err}', file=sys.stderr)
+                continue
+            except requests.exceptions.ConnectionError as conn_err:
+                print(f'Ошибка соединения при загрузке {img_url}: {conn_err}', file=sys.stderr)
+                time.sleep(1)
+                continue
 
-            PlaceImage.objects.create(
-                place=place,
-                position=idx,
-                image=ContentFile(
-                    img_response.content,
-                    name=f'{slugify(place.title)}_{idx}.jpg'
-                )
-            )
+            img_content = ContentFile(img_response.content)
+            image = PlaceImage(place=place, position=idx)
+            image.image.save(f'{place.title}_{idx}.jpg', img_content, save=True)
 
         self.stdout.write(self.style.SUCCESS(f'Загружено: {place.title}'))
