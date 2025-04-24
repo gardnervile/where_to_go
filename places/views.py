@@ -1,8 +1,10 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Place
 import json
+
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from django.urls import reverse
+
+from .models import Place
 
 
 def show_places(request):
@@ -31,6 +33,7 @@ def show_places(request):
     return render(request, 'index.html', {
         'geojson_data': json.dumps(geojson, ensure_ascii=False)
     })
+
 
 def place_detail(request, id):
     place = get_object_or_404(Place, id=id)
