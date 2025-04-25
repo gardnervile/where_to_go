@@ -11,27 +11,26 @@ def show_places(request):
     places = Place.objects.all()
 
     features = [
-    {
-        'type': 'Feature',
-        'geometry': {
-            'type': 'Point',
-            'coordinates': [place.longitude, place.latitude]
-        },
-        'properties': {
-            'title': place.title,
-            'short_description': place.short_description,
-            'placeId': f'place_{place.id}',
-            'detailsUrl': reverse('place_detail', args=[place.id]),
+        {
+            'type': 'Feature',
+            'geometry': {
+                'type': 'Point',
+                'coordinates': [place.longitude, place.latitude]
+            },
+            'properties': {
+                'title': place.title,
+                'short_description': place.short_description,
+                'placeId': f'place_{place.id}',
+                'detailsUrl': reverse('place_detail', args=[place.id]),
+            }
         }
-    }
-    for place in places
-]
+        for place in places
+    ]
 
     geojson = {
         'type': 'FeatureCollection',
         'features': features,
     }
-
 
     return render(request, 'index.html', {
         'geojson_data': json.dumps(geojson, ensure_ascii=False)

@@ -27,7 +27,7 @@ class PlaceImageInline(SortableInlineAdminMixin, admin.TabularInline):
     get_preview.short_description = 'Превью'
 
 
-@admin.register(Place)  
+@admin.register(Place)
 class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
     list_display = ('id', "title", "latitude", "longitude")
     inlines = [PlaceImageInline]

@@ -3,15 +3,16 @@ import os
 
 from environs import Env
 
+
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 env = Env()
 env.read_env(os.path.join(BASE_DIR, '.env'))
 
+
 DEBUG = env.bool('DEBUG', default=False)
-
 SECRET_KEY = env.str('SECRET_KEY')
-
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', subcast=str, default=[])
 
 
@@ -28,6 +29,7 @@ INSTALLED_APPS = [
 
 ]
 
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -38,7 +40,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
 ROOT_URLCONF = 'where_to_go.urls'
+
 
 TEMPLATES = [
     {
@@ -55,6 +59,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'where_to_go.wsgi.application'
 
@@ -84,11 +89,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
 
-USE_I18N = True
 
+USE_I18N = True
 USE_TZ = True
 
 
@@ -98,7 +102,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # Добавили путь к папке templates
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -115,8 +119,10 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
