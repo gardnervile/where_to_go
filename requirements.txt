@@ -5,3 +5,5 @@ django-tinymce==4.1.0
 environs==14.1.1
 pillow==11.2.1
 sqlparse==0.5.3
+requests==2.31.0
+python-dotenv==1.1.0
