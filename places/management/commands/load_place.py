@@ -54,8 +54,13 @@ class Command(BaseCommand):
                 time.sleep(1)
                 continue
 
-            img_content = ContentFile(img_response.content)
-            image = PlaceImage(place=place, position=idx)
-            image.image.save(f'{place.title}_{idx}.jpg', img_content, save=True)
+            PlaceImage.objects.create(
+                place=place,
+                position=idx,
+                image=ContentFile(
+                    img_response.content,
+                    name=f'{place.title}_{idx}.jpg',
+                ),
+            )
 
         self.stdout.write(self.style.SUCCESS(f'Загружено: {place.title}'))
